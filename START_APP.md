@@ -6,32 +6,43 @@
 
 ## What this app is
 
-- **App:** <one line — e.g., "a paste-bin service" (menu #1)>
-- **Stack:** <Python + Flask / FastAPI, or Node + Express>
+- **App:** a notes / journal app with login (menu #2)
+- **Stack:** Python + Flask (SQLite file storage)
 
 ## Start it
 
 ```bash
 # 1. Install dependencies
-<e.g. pip install -r requirements.txt   OR   npm install>
+python -m venv .venv && . .venv/bin/activate   # if you don't already have the venv
+pip install -r requirements.txt
 
 # 2. Run it
-<e.g. flask --app app run --port 8000   OR   uvicorn app:app --port 8000   OR   node server.js>
+flask --app app run --port 8000
 ```
 
-- **Base URL:** <e.g. http://localhost:8000>
+The database (`notes.db`) is created and seeded automatically on first run. To start from a
+clean slate, delete `notes.db` and run again.
+
+- **Base URL:** http://localhost:8000
 - **Stop it:** Ctrl-C in the terminal running it.
 
 ## How to interact with it
 
 - **Main endpoints / pages:**
-  - `<METHOD> <path>` — <what it does> — <example>
-  - `<METHOD> <path>` — <what it does> — <example>
-- **Accounts / credentials for legitimate use** (if the app has login): <demo username/password, or "none">
+  - `GET /` — your home page: lists your notes (when logged in) — `http://localhost:8000/`
+  - `GET|POST /register` — create an account — form fields `username`, `password`
+  - `GET|POST /login` — log in — form fields `username`, `password`
+  - `GET /logout` — log out
+  - `GET|POST /notes/new` — write a new note — form fields `title`, `body`
+  - `GET /notes/<id>` — view a single note by numeric id — e.g. `http://localhost:8000/notes/2`
+- **Accounts / credentials for legitimate use:** seeded demo account `demo` / `demo123`
+  (there is also an `admin` / `admin123` account). You can also register your own.
 - **A benign request that should succeed:**
 
   ```bash
-  <e.g. curl http://localhost:8000/notes/1>
+  # log in as demo, then read demo's own note #2
+  curl -s -c jar.txt -d "username=demo&password=demo123" http://localhost:8000/login
+  curl -s -b jar.txt http://localhost:8000/notes/2
   ```
 
 ## For breakers
